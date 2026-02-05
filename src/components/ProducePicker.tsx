@@ -6,7 +6,7 @@ import { scorePepper, pepperReasons, formatHeatLevel } from "../crops/pepperScor
 import { runMatching } from "../engine/match";
 
 import type { PepperUseCase } from "../crops/pepperEnums";
-import { PEPPER_HEAT_CATEGORIES, PEPPER_TYPES, PEPPER_CUISINES, PEPPER_GROWTH_HABITS, PEPPER_CLIMATES, PEPPER_DIFFICULTY } from "../crops/pepperEnums";
+import { PEPPER_HEAT_CATEGORIES, PEPPER_CUISINES, PEPPER_DIFFICULTY } from "../crops/pepperEnums";
 
 import { AffiliateCTA } from "./AffiliateCTA";
 import { ComparisonView } from "./ComparisonView";
@@ -403,8 +403,8 @@ const ProducePicker = () => {
             <div className="mb-4 sm:mb-5">
               <label className="block text-sm font-medium mb-2 text-ink">Primary Uses (select multiple)</label>
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 border border-ink/20 rounded-md p-3 bg-white">
-                {allUseCases.map((use) => {
-                  const u = use as PepperUseCase;
+                {allUseCases.map((use: PepperUseCase) => {
+                  const u = use;
                   return (
                     <div key={u} className="flex items-center min-h-[36px]">
                       <input

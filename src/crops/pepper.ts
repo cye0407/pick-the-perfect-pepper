@@ -1,6 +1,25 @@
 import type { Pepper } from "../types/pepper";
+import { PEPPER_USE_CASES } from "./pepperEnums";
+import type { PepperUseCase } from "./pepperEnums";
 
 export const pepperCrop = {
+  id: "pepper",
+  label: "Pepper",
+  regions: ["US", "EU"] as const,
+  useCases: PEPPER_USE_CASES,
+  defaultPreferences: {
+    heatCategory: "No preference" as const,
+    sweetness: 5,
+    fruitiness: 5,
+    smokiness: 5,
+    pepperType: "No preference",
+    useCase: [] as PepperUseCase[],
+    cuisineStyle: "No preference",
+    growthHabit: "No preference",
+    climateSuitability: "No preference",
+    containerFriendly: "No preference",
+    difficulty: "No preference" as const,
+  },
   items: [
     {
       id: 32,
