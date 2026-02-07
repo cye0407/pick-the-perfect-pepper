@@ -11,6 +11,7 @@ import { PEPPER_HEAT_CATEGORIES, PEPPER_CUISINES, PEPPER_DIFFICULTY } from "../c
 import { AffiliateCTA } from "./AffiliateCTA";
 import { ComparisonView } from "./ComparisonView";
 import { TableView } from "./TableView";
+import { GrowingGuide } from "./GrowingGuide";
 
 import { renderStars, renderHeat } from "../utils/stars";
 import { getProfileBySlug } from "../data/searchProfiles";
@@ -55,6 +56,7 @@ const ProducePicker = () => {
   const [showComparison, setShowComparison] = useState(false);
 
   const [selectedRegion, setSelectedRegion] = useState<Region>("US");
+  const [growVariety, setGrowVariety] = useState<Pepper | null>(null);
 
   // Accordion states
   const [showTopMatches, setShowTopMatches] = useState(false);
@@ -316,6 +318,70 @@ const ProducePicker = () => {
       </div>
     );
   };
+
+  // ─── Grow Mode ───
+  if (growVariety) {
+    return (
+      <div className="w-full max-w-4xl mx-auto px-3 py-4 sm:p-6 bg-gray-100 min-h-screen">
+        <button
+          onClick={() => setGrowVariety(null)}
+          className="mb-4 text-sm font-medium text-pepper-red hover:text-pepper-red/80 transition flex items-center gap-1"
+        >
+          &larr; Back to picker results
+        </button>
+
+        <div className="bg-white rounded-lg shadow-lg p-4 sm:p-6 md:p-8 mb-4 border-t-4 border-pepper-red">
+          <h1 className="text-xl sm:text-2xl font-bold text-ink mb-4">
+            How to Grow {growVariety.name}
+          </h1>
+
+          <div className="grid grid-cols-2 sm:grid-cols-3 gap-3 mb-4 text-sm">
+            <div>
+              <span className="text-ink/50 block text-xs">Heat Level</span>
+              <span className="font-medium text-ink capitalize">{renderHeat(growVariety.heatCategory)} {growVariety.heatCategory.replace("_", " ")}</span>
+            </div>
+            <div>
+              <span className="text-ink/50 block text-xs">Growth Habit</span>
+              <span className="font-medium text-ink capitalize">{growVariety.growthHabit}</span>
+            </div>
+            <div>
+              <span className="text-ink/50 block text-xs">Days to Maturity</span>
+              <span className="font-medium text-ink">{growVariety.daysToMaturity_min}-{growVariety.daysToMaturity_max}</span>
+            </div>
+            <div>
+              <span className="text-ink/50 block text-xs">Difficulty</span>
+              <span className="font-medium text-ink capitalize">{growVariety.difficulty}</span>
+            </div>
+            <div>
+              <span className="text-ink/50 block text-xs">Container Friendly</span>
+              <span className="font-medium text-ink">{growVariety.containerFriendly ? "Yes" : "No"}</span>
+            </div>
+            <div>
+              <span className="text-ink/50 block text-xs">Indoor Suitable</span>
+              <span className="font-medium text-ink">{growVariety.indoorSuitable ? "Yes" : "No"}</span>
+            </div>
+          </div>
+
+          <AffiliateCTA
+            item={growVariety}
+            selectedRegion={selectedRegion}
+            setSelectedRegion={setSelectedRegion}
+            affiliateLinks={affiliateLinks}
+            preferences={preferences}
+          />
+        </div>
+
+        <GrowingGuide variety={growVariety} />
+
+        <button
+          onClick={() => { setGrowVariety(null); window.scrollTo({ top: 0, behavior: "smooth" }); }}
+          className="mt-4 text-sm font-medium text-pepper-red hover:text-pepper-red/80 transition flex items-center gap-1"
+        >
+          &larr; Back to picker results
+        </button>
+      </div>
+    );
+  }
 
   return (
     <div className="w-full max-w-4xl mx-auto px-3 py-4 sm:p-6 bg-gray-100 min-h-screen">
@@ -650,6 +716,13 @@ const ProducePicker = () => {
                   affiliateLinks={affiliateLinks}
                   preferences={preferences}
                 />
+
+                <button
+                  onClick={() => { setGrowVariety(selectedPepper); window.scrollTo({ top: 0, behavior: "smooth" }); }}
+                  className="w-full mt-4 bg-pepper-red text-white p-3 sm:p-4 rounded-md font-semibold text-sm sm:text-base hover:bg-pepper-red/90 active:bg-pepper-red/80 transition min-h-[48px] touch-manipulation"
+                >
+                  🌶️ Grow This Pepper — Full Growing Guide
+                </button>
 
                 <div className="text-center text-xs text-ink/60 mt-4 px-2 sm:px-4">
                   Some links may be affiliate links. If you buy through them, I may earn a small commission at no extra cost to you.
